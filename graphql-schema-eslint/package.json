@@ -1,0 +1,32 @@
+{
+  "name": "@apigateway/graphql-schema-eslint-plugin",
+  "version": "0.0.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "main": "dist/index.mjs",
+  "scripts": {
+    "build": "tsc",
+    "lint": "biome lint",
+    "lint:fix": "biome lint --write .",
+    "prebuild": "rimraf dist",
+    "test": "vitest run"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@graphql-eslint/eslint-plugin": "^4.3.0",
+    "graphql": "^16.10.0",
+    "json-schema-to-ts": "^3.1.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@typescript-eslint/rule-tester": "^8.16.0",
+    "eslint": "^9.15.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.7.2",
+    "vite-tsconfig-paths": "^5.1.3",
+    "vitest": "^2.1.6"
+  }
+}
