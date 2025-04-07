@@ -1,0 +1,2073 @@
+extend schema
+  @link(url: "https://specs.apollo.dev/federation/v2.3", import: ["@composeDirective", "@extends", "@external", "@inaccessible", "@interfaceObject", "@key", "@override", "@provides", "@requires", "@shareable", "@tag"])
+
+"""応募アップロードファイル"""
+type JobmatchingOutsourceApplicationAttachmentFileModel {
+  """データベースID"""
+  databaseId: Int!
+
+  """応募ID"""
+  outsourceApplicationId: Int!
+
+  """ファイル名"""
+  fileName: String!
+
+  """ファイルURL"""
+  fileUrl: String!
+
+  """AWS S3 署名付きダウンロードURL"""
+  presignedDownloadUrl: String
+
+  """ファイルキー"""
+  fileKey: String!
+
+  """ファイルサイズ"""
+  fileSize: Int!
+
+  """mimeタイプ"""
+  mime: String!
+
+  """作成日時"""
+  createdAt: DateTime!
+
+  """更新日時"""
+  updatedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+"""継続案件添付ファイル"""
+type JobmatchingOutsourceAttachmentFileModel {
+  """データベースID"""
+  databaseId: Int!
+
+  """継続案件ID"""
+  outsourceId: Int!
+
+  """ファイル名"""
+  fileName: String!
+
+  """ファイルURL"""
+  fileUrl: String!
+
+  """AWS S3 署名付きダウンロードURL"""
+  presignedDownloadUrl: String
+
+  """ファイルキー"""
+  fileKey: String!
+
+  """ファイルサイズ"""
+  fileSize: Int!
+
+  """mimeタイプ"""
+  mime: String!
+
+  """作成日時"""
+  createdAt: DateTime!
+
+  """更新日時"""
+  updatedAt: DateTime!
+}
+
+"""公開情報ユーザー"""
+type PublicUser implements Node
+  @shareable
+{
+  """グローバルID"""
+  id: ID
+}
+
+"""Node interface"""
+interface Node {
+  """グローバルID"""
+  id: ID
+}
+
+"""案件トークルーム 既読レコード"""
+type JobmatchingJobTalkroomReadRecordModel {
+  """データベースID"""
+  databaseId: Int!
+
+  """既読日時"""
+  readAt: DateTime!
+}
+
+"""案件トークルーム参加者"""
+type JobmatchingJobTalkroomParticipantModel {
+  """グローバルID"""
+  id: ID
+
+  """データベースID"""
+  databaseId: Int!
+
+  """既読レコード"""
+  jobTalkroomReadRecord: JobmatchingJobTalkroomReadRecordModel
+
+  """ユーザー情報"""
+  userInfo: PublicUser!
+
+  """ユーザータイプ"""
+  userType: String!
+
+  """ユーザーID"""
+  userId: Int!
+
+  """トークルーム参加者の本名"""
+  userRealName: String
+
+  """トークルーム参加者のメールアドレス"""
+  userEmail: String
+}
+
+"""案件トークルームメッセージ添付ファイル"""
+type JobmatchingJobTalkroomAttachmentFileModel {
+  """データベースID"""
+  databaseId: Int!
+
+  """ファイル名"""
+  fileName: String!
+
+  """ファイルURL"""
+  fileUrl: String!
+
+  """ファイルキー"""
+  fileKey: String!
+
+  """ファイルサイズ"""
+  fileSize: Int!
+
+  """MIME"""
+  mime: String!
+
+  """作成日時"""
+  createdAt: DateTime!
+
+  """更新日時"""
+  updatedAt: DateTime!
+}
+
+"""案件トークルームメッセージのフォーマットタイプ"""
+type JobmatchingJobTalkroomMessageFormatModel {
+  """グローバルID"""
+  id: ID!
+
+  """データベースID"""
+  databaseId: Int!
+
+  """フォーマットタイプ"""
+  formatType: JobTalkroomMessageFormatType!
+}
+
+"""案件トークルームメッセージ / フォーマットタイプ"""
+enum JobTalkroomMessageFormatType {
+  """ユーザーメッセージ"""
+  DEFAULT
+
+  """スカウト送信した時のシステムメッセージ"""
+  SCOUT_FLOW
+
+  """スカウト送信した時のユーザーメッセージ"""
+  SCOUTED
+
+  """面接希望"""
+  INTERVIEW_DESIRED
+
+  """スカウト取り下げ"""
+  SCOUT_WITHDRAWN
+
+  """スカウト辞退"""
+  SCOUT_DECLINED
+
+  """応募経路で応募したときに送信されるシステムメッセージ"""
+  APPLICATION_FLOW
+
+  """応募経路で応募したときに送信されるユーザーメッセージ"""
+  APPLIED
+
+  """書類選考通過"""
+  SCREENED
+
+  """面接日程調整中"""
+  INTERVIEW_SCHEDULING
+
+  """面接日程確定"""
+  INTERVIEW_SCHEDULED
+
+  """面接日程変更希望"""
+  INTERVIEW_RESCHEDULE_REQUEST
+
+  """面接キャンセル"""
+  INTERVIEW_CANCEL
+
+  """面接結果"""
+  INTERVIEW_RESULT
+
+  """契約希望"""
+  CONTRACT_PROPOSED
+
+  """応募のお見送り"""
+  REJECT
+
+  """応募辞退"""
+  APPLICATION_CANCEL
+
+  """契約希望受諾"""
+  CONTRACT_AGREED
+
+  """面接不参加"""
+  INTERVIEW_ABSENT
+}
+
+"""案件トークルームメッセージ / メッセージ取得 / レスポンス"""
+type JobmatchingJobTalkroomMessageDto {
+  """データベースID"""
+  databaseId: Int!
+
+  """メッセージ本文"""
+  message: String
+
+  """作成日時"""
+  createdAt: DateTime!
+
+  """更新日時"""
+  updatedAt: DateTime!
+
+  """トークルーム参加者のユーザーID"""
+  userId: Int!
+
+  """トークルーム参加者のユーザータイプ"""
+  userType: JobTalkroomParticipantType!
+
+  """自分からのメッセージかどうか"""
+  isFromMe: Boolean!
+
+  """メッセージの既読状態"""
+  isRead: Boolean!
+
+  """メッセージタイプ"""
+  formatType: JobTalkroomMessageFormatType!
+
+  """メッセージの添付ファイル"""
+  attachmentedFile: [JobmatchingJobTalkroomMessageAttachmentedFile!]
+}
+
+"""案件トークルーム参加者タイプ"""
+enum JobTalkroomParticipantType {
+  """案件発注者"""
+  CLIENT
+
+  """案件候補者"""
+  SUPPLIER
+
+  """システムユーザー"""
+  SYSTEM
+}
+
+"""案件トークルームメッセージ / メッセージ取得 / レスポンス / 添付ファイル"""
+type JobmatchingJobTalkroomMessageAttachmentedFile {
+  """ファイル名"""
+  fileName: String!
+
+  """ファイルURL"""
+  fileUrl: String!
+
+  """ファイルキー"""
+  fileKey: String!
+
+  """ファイルサイズ"""
+  fileSize: Int!
+
+  """ファイル形式"""
+  mime: String!
+
+  """ダウンロードURL"""
+  presignedDownloadUrl: String!
+}
+
+"""会社担当者情報"""
+type JobmatchingOutsourceCompanyContact {
+  """グローバルID"""
+  id: ID
+
+  """データベースID"""
+  databaseId: Int!
+
+  """継続案件ID"""
+  outsourceId: Int!
+
+  """担当者姓"""
+  lastName: String
+
+  """担当者名"""
+  firstName: String
+
+  """担当者姓(カナ)"""
+  lastNameKana: String
+
+  """担当者名(カナ)"""
+  firstNameKana: String
+
+  """仕事用の電話番号"""
+  phoneNumber: String
+
+  """作成日時"""
+  createdAt: DateTime!
+
+  """更新日時"""
+  updatedAt: DateTime!
+}
+
+"""都道府県"""
+type JobmatchingPrefectureModel {
+  """グローバルID"""
+  id: ID
+
+  """データベースID"""
+  databaseId: Int!
+
+  """都道府県名"""
+  name: String!
+}
+
+"""会社情報"""
+type JobmatchingOutsourceCompany {
+  """グローバルID"""
+  id: ID
+
+  """データベースID"""
+  databaseId: Int!
+
+  """継続案件ID"""
+  outsourceId: Int!
+
+  """会社名"""
+  name: String
+
+  """郵便番号"""
+  postalCode: String
+
+  """都道府県ID"""
+  prefectureId: Int
+
+  """市区町村"""
+  city: String
+
+  """町域名"""
+  districtName: String
+
+  """番地"""
+  streetAddress: String
+
+  """ビル・マンション名"""
+  buildingName: String
+
+  """URL"""
+  url: String
+
+  """事業・サービス概要"""
+  description: String
+
+  """ロゴ名"""
+  logoFileName: String
+
+  """ロゴURL"""
+  logoFileUrl: String
+
+  """ロゴファイルキー"""
+  logoFileKey: String
+
+  """作成日時"""
+  createdAt: DateTime!
+
+  """更新日時"""
+  updatedAt: DateTime!
+
+  """都道府県情報"""
+  prefecture: JobmatchingPrefectureModel
+}
+
+"""継続案件"""
+type JobmatchingOutsourceDetailModel {
+  """グローバルID"""
+  id: ID
+
+  """データベースID"""
+  databaseId: Int!
+
+  """募集ID"""
+  outsourceId: Int!
+
+  """キー"""
+  detailKey: String!
+
+  """バリュー"""
+  detailValue: String
+
+  """関連ID"""
+  detailRelatedId: Int
+}
+
+"""継続案件_閲覧回数"""
+type JobmatchingOutsourceViewCount {
+  """グローバルID"""
+  id: ID
+
+  """データベースID"""
+  databaseId: Int!
+
+  """継続案件ID"""
+  outsourceId: Int!
+
+  """閲覧者のユーザーID"""
+  userId: Int!
+
+  """閲覧数"""
+  views: Int!
+
+  """作成日時"""
+  createdAt: DateTime!
+
+  """更新日時"""
+  updatedAt: DateTime!
+}
+
+"""継続案件"""
+type JobmatchingOutsourceModel {
+  """グローバルID"""
+  id: ID
+
+  """データベースID"""
+  databaseId: Int!
+
+  """募集ULID"""
+  outsourceUlid: String!
+
+  """ユーザ"""
+  userId: Int!
+
+  """募集ステータス"""
+  status: String!
+
+  """タイトル"""
+  title: String
+
+  """説明"""
+  description: String
+
+  """経験職種ID"""
+  experienceJobCategoryId: Int
+
+  """支払い形式"""
+  paymentMethodType: JobmatchingOutsourcePaymentMethodType
+
+  """下限稼働時間（週）"""
+  weeklyMinWorkingHour: Int
+
+  """上限稼働時間（週）"""
+  weeklyMaxWorkingHour: Int
+
+  """下限稼働時間（月）"""
+  monthlyMinWorkingHour: Int
+
+  """上限稼働時間（月）"""
+  monthlyMaxWorkingHour: Int
+
+  """下限単価（週）"""
+  hourlyMinUnitPrice: Int
+
+  """上限単価（週）"""
+  hourlyMaxUnitPrice: Int
+
+  """下限単価（月）"""
+  monthlyMinUnitPrice: Int
+
+  """上限単価（月）"""
+  monthlyMaxUnitPrice: Int
+
+  """稼働日数"""
+  workingDayType: String
+
+  """応募時記載メッセージ"""
+  applicationDefaultMessage: String
+
+  """継続案件"""
+  outsourceDetails: [JobmatchingOutsourceDetailModel!]!
+
+  """応募"""
+  outsourceApplications: [JobmatchingOutsourceApplicationModel!]
+
+  """法人情報"""
+  outsourceCompanies: [JobmatchingOutsourceCompany!]!
+
+  """会社担当者情報"""
+  outsourceCompanyContacts: [JobmatchingOutsourceCompanyContact!]!
+
+  """閲覧回数"""
+  outsourceViewCounts: [JobmatchingOutsourceViewCount!]
+
+  """添付ファイル"""
+  outsourceAttachmentFiles: [JobmatchingOutsourceAttachmentFileModel!]
+
+  """都道府県ID"""
+  prefectureId: Int
+
+  """都道府県"""
+  prefecture: JobmatchingPrefectureModel
+}
+
+"""継続型案件の支払い形式"""
+enum JobmatchingOutsourcePaymentMethodType {
+  HOURLY
+  MONTHLY
+}
+
+"""面談可能スケジュール"""
+type JobmatchingMeetingableScheduleModel {
+  """開始時間"""
+  startingAt: DateTime!
+
+  """終了時間"""
+  endingAt: DateTime!
+}
+
+"""三者面談"""
+type JobmatchingOutsourceOnlineMeetingModel {
+  """グローバルID"""
+  id: ID
+
+  """データベースID"""
+  databaseId: Int!
+
+  """面談時間"""
+  durationType: JobmatchingOutsourceOnlineMeetingDuration!
+
+  """面談可能スケジュール"""
+  meetingableSchedules: [JobmatchingMeetingableScheduleModel!]
+
+  """面談開始時間"""
+  meetingStartingAt: DateTime
+
+  """面談入室URL"""
+  meetingUrl: String
+}
+
+"""三者面談の面談時間"""
+enum JobmatchingOutsourceOnlineMeetingDuration {
+  THIRTY_MINUTES
+  SIXTY_MINUTES
+}
+
+"""応募"""
+type JobmatchingOutsourceApplicationModel {
+  """グローバルID"""
+  id: ID
+
+  """データベースID"""
+  databaseId: Int!
+
+  """ユーザーID"""
+  userId: Int!
+
+  """応募ULID"""
+  outsourceApplicationUlid: String!
+
+  """応募状態"""
+  status: JobmatchingOutsourceApplicationStatus!
+
+  """月あたりの希望する報酬金額"""
+  monthlyDesiredUnitPrice: Int
+
+  """時間あたりの希望する報酬金額"""
+  hourlyDesiredUnitPrice: Int
+
+  """週の下限稼働時間"""
+  weeklyMinWorkingHour: Int
+
+  """週の上限稼働時間"""
+  weeklyMaxWorkingHour: Int
+
+  """月の下限稼働時間"""
+  monthlyMinWorkingHour: Int
+
+  """月の上限稼働時間"""
+  monthlyMaxWorkingHour: Int
+
+  """稼働日数"""
+  workingDayType: JobmatchingOutsourceWorkingDayType
+
+  """応募メッセージ"""
+  applicationMessage: String!
+
+  """応募者情報"""
+  applicantUser: PublicUser!
+
+  """案件情報"""
+  outsource: JobmatchingOutsourceModel!
+
+  """三者面談情報"""
+  outsourceOnlineMeeting: JobmatchingOutsourceOnlineMeetingModel
+
+  """添付ファイル"""
+  outsourceApplicationAttachmentFiles: [JobmatchingOutsourceApplicationAttachmentFileModel!]
+}
+
+"""継続型案件の応募状態"""
+enum JobmatchingOutsourceApplicationStatus {
+  APPLIED
+  SCREENED
+  SCHEDULING
+  SCHEDULED
+  INTERVIEWED
+  PROPOSED
+  AGREED
+  FINISHED
+  REJECTED
+  CANCELED
+  WITHDRAWN
+}
+
+"""継続型案件の稼働日数"""
+enum JobmatchingOutsourceWorkingDayType {
+  """週1日"""
+  WEEK_ONE
+
+  """週2日"""
+  WEEK_TWO
+
+  """週3日"""
+  WEEK_THREE
+
+  """週4日"""
+  WEEK_FOUR
+
+  """週5日"""
+  WEEK_FIVE
+
+  """隔週"""
+  BIWEEKLY
+
+  """月1日"""
+  MONTH_ONE
+}
+
+"""案件トークルーム / 案件メッセージとPolling更新関連情報のレスポンス"""
+type JobmatchingJobTalkroomLatestMessagesAndStatusResult {
+  """案件メッセージ"""
+  messages: [JobmatchingJobTalkroomMessageDto!]!
+
+  """アクションステータス"""
+  jobTalkroomActionStatus: JobTalkroomActionStatus
+
+  """応募情報"""
+  outsourceApplicationInfo: JobmatchingOutsourceApplicationInfo
+
+  """三者面談情報"""
+  onlineMeetingInfo: JobmatchingOnlineMeetingInfo
+
+  """案件トークルームのアクティブ状態（メッセージ送信可能）"""
+  isJobTalkroomActive: Boolean!
+
+  """まだ取得できるメッセージが残っているかどうか（リクエストタイプがLATESTの場合、過去のメッセージがあるかの判別）"""
+  hasMore: Boolean!
+
+  """未読メッセージ数"""
+  unreadMessageCount: Int!
+}
+
+"""案件トークルームアクションステータス"""
+enum JobTalkroomActionStatus {
+  """応募あり"""
+  APPLIED
+
+  """書類選考通過"""
+  SCREENED
+
+  """面談日程調整中"""
+  SCHEDULING
+
+  """面談日程確定"""
+  SCHEDULED
+
+  """面談完了"""
+  INTERVIEWED
+
+  """事前契約希望"""
+  PROPOSED
+
+  """事前契約希望合意"""
+  AGREED
+
+  """契約済み"""
+  FINISHED
+
+  """お見送り"""
+  REJECTED
+
+  """管理者取り下げ"""
+  WITHDRAWN
+
+  """辞退"""
+  CANCELED
+
+  """スカウト未読"""
+  SCOUT_UNREAD
+
+  """スカウト既読"""
+  SCOUT_VIEWED
+
+  """スカウト承諾"""
+  SCOUT_APPLIED
+
+  """スカウト管理者取り下げ"""
+  SCOUT_BANNED
+
+  """スカウト取り下げ"""
+  SCOUT_WITHDRAWN
+
+  """スカウト辞退"""
+  SCOUT_DECLINED
+}
+
+"""案件トークルーム最新メッセージ / 三者面談情報"""
+type JobmatchingOnlineMeetingInfo {
+  """データベースID"""
+  databaseId: Int!
+
+  """面談時間"""
+  durationType: JobmatchingOutsourceOnlineMeetingDuration!
+
+  """面談開始時間"""
+  meetingStartingAt: DateTime
+}
+
+"""案件トークルーム最新メッセージ / 応募情報"""
+type JobmatchingOutsourceApplicationInfo {
+  """月あたりの希望する報酬金額"""
+  monthlyDesiredUnitPrice: Int
+
+  """時間あたりの希望する報酬金額"""
+  hourlyDesiredUnitPrice: Int
+
+  """応募メッセージ"""
+  applicationMessage: String!
+}
+
+"""案件トークルーム / 最新メッセージとステータス / レスポンス"""
+type JobmatchingPostJobTalkroomMessageDto {
+  """データベースID"""
+  databaseId: Int!
+}
+
+"""スカウト求人広告"""
+type JobmatchingScoutModel {
+  """グローバルID"""
+  id: ID
+
+  """データベースID"""
+  databaseId: Int!
+
+  """求人広告アクションID"""
+  jobPostingActionId: Int!
+
+  """スカウトを受けたユーザーID"""
+  recipientId: Int!
+
+  """スカウト時のメッセージ"""
+  message: String!
+
+  """スカウトの進行状態"""
+  activeStatus: JobmatchingScoutActiveStatus!
+
+  """辞退フラグ"""
+  isDeclined: Boolean!
+
+  """取り下げフラグ"""
+  isWithdrawn: Boolean!
+
+  """管理者からの取り下げフラグ"""
+  isBanned: Boolean!
+
+  """作成日時"""
+  createdAt: DateTime!
+
+  """更新日時"""
+  updatedAt: DateTime!
+
+  """スカウトを受けたユーザー"""
+  scoutedUser: PublicUser!
+}
+
+"""スカウト進行状態"""
+enum JobmatchingScoutActiveStatus {
+  """未読"""
+  UNREAD
+
+  """閲覧済み"""
+  VIEWED
+
+  """スカウト受諾済み"""
+  APPLIED
+}
+
+"""案件トークルーム"""
+type JobmatchingJobTalkroomModel {
+  """データベースID"""
+  databaseId: Int!
+
+  """Ulid"""
+  jobTalkroomUlid: String!
+
+  """アクションステータス"""
+  jobTalkroomActionStatus: JobTalkroomActionStatus
+
+  """スカウト"""
+  scout: JobmatchingScoutModel
+
+  """継続案件応募"""
+  outsourceApplication: JobmatchingOutsourceApplicationModel
+
+  """トークルーム参加者"""
+  jobTalkroomParticipants: JobmatchingJobTalkroomParticipantModel!
+}
+
+"""案件トークルーム / 案件アクション / 求人広告 / 継続案件"""
+type JobmatchingMyJobTalkroomJobPostingOutsourceModel {
+  """募集ULID"""
+  outsourceUlid: String!
+
+  """募集ステータス"""
+  status: String!
+
+  """タイトル"""
+  title: String
+
+  """説明"""
+  description: String
+
+  """経験職種ID"""
+  experienceJobCategoryId: Int
+
+  """支払い形式"""
+  paymentMethodType: JobmatchingOutsourcePaymentMethodType
+
+  """下限稼働時間（週）"""
+  weeklyMinWorkingHour: Int
+
+  """上限稼働時間（週）"""
+  weeklyMaxWorkingHour: Int
+
+  """下限稼働時間（月）"""
+  monthlyMinWorkingHour: Int
+
+  """上限稼働時間（月）"""
+  monthlyMaxWorkingHour: Int
+
+  """下限単価（週）"""
+  hourlyMinUnitPrice: Int
+
+  """上限単価（週）"""
+  hourlyMaxUnitPrice: Int
+
+  """下限単価（月）"""
+  monthlyMinUnitPrice: Int
+
+  """上限単価（月）"""
+  monthlyMaxUnitPrice: Int
+
+  """稼働日数"""
+  workingDayType: String
+
+  """応募時記載メッセージ"""
+  applicationDefaultMessage: String
+
+  """継続案件"""
+  outsourceDetails: [JobmatchingOutsourceDetailModel!]!
+
+  """添付ファイル"""
+  outsourceAttachmentFiles: [JobmatchingOutsourceAttachmentFileModel!]
+
+  """都道府県"""
+  prefecture: JobmatchingPrefectureModel
+
+  """法人情報"""
+  outsourceCompany: JobmatchingOutsourceCompany!
+
+  """会社担当者情報"""
+  outsourceCompanyContact: JobmatchingOutsourceCompanyContact!
+
+  """継続案件のスカウト送信数"""
+  scoutCount: Int!
+
+  """継続案件の応募済み件数"""
+  appliedApplicationCount: Int!
+
+  """継続案件の面談応募件数"""
+  interviewApplicationCount: Int!
+
+  """継続案件の契約応募件数"""
+  finishedApplicationCount: Int!
+
+  """継続案件の閲覧数"""
+  totalViewsCount: Int!
+}
+
+"""案件トークルーム / 案件アクション / 求人広告"""
+type JobmatchingMyJobTalkroomJobPostingModel {
+  """求人広告ULID"""
+  jobPostingUlid: String!
+
+  """公開フラグ"""
+  isPublic: Boolean!
+
+  """継続案件"""
+  outsource: JobmatchingMyJobTalkroomJobPostingOutsourceModel!
+}
+
+"""案件トークルーム / 案件アクション / 継続案件応募"""
+type JobmatchingMyJobTalkroomOutsourceApplicationModel {
+  """応募状態"""
+  status: JobmatchingOutsourceApplicationStatus!
+
+  """月あたりの希望する報酬金額"""
+  monthlyDesiredUnitPrice: Int
+
+  """時間あたりの希望する報酬金額"""
+  hourlyDesiredUnitPrice: Int
+
+  """週の下限稼働時間"""
+  weeklyMinWorkingHour: Int
+
+  """週の上限稼働時間"""
+  weeklyMaxWorkingHour: Int
+
+  """月の下限稼働時間"""
+  monthlyMinWorkingHour: Int
+
+  """月の上限稼働時間"""
+  monthlyMaxWorkingHour: Int
+
+  """稼働日数"""
+  workingDayType: JobmatchingOutsourceWorkingDayType
+
+  """応募メッセージ"""
+  applicationMessage: String!
+
+  """三者面談情報"""
+  outsourceOnlineMeeting: JobmatchingOutsourceOnlineMeetingModel
+
+  """添付ファイル"""
+  outsourceApplicationAttachmentFiles: [JobmatchingOutsourceApplicationAttachmentFileModel!]
+}
+
+"""案件トークルーム / 案件アクション / スカウト"""
+type JobmatchingMyJobTalkroomScoutModel {
+  """スカウト時のメッセージ"""
+  message: String!
+
+  """スカウトの進行状態"""
+  activeStatus: JobmatchingScoutActiveStatus!
+
+  """辞退フラグ"""
+  isDeclined: Boolean!
+
+  """取り下げフラグ"""
+  isWithdrawn: Boolean!
+
+  """管理者からの取り下げフラグ"""
+  isBanned: Boolean!
+}
+
+"""案件トークルーム / 案件アクション"""
+type JobmatchingMyJobTalkroomJobPostingActionModel {
+  """案件アクション"""
+  initialAction: JobPostingAction!
+
+  """求人広告"""
+  jobPosting: JobmatchingMyJobTalkroomJobPostingModel!
+
+  """スカウト"""
+  scout: JobmatchingMyJobTalkroomScoutModel
+
+  """継続案件応募"""
+  outsourceApplication: JobmatchingMyJobTalkroomOutsourceApplicationModel
+}
+
+"""案件アクション"""
+enum JobPostingAction {
+  """継続案件応募経由"""
+  OUTSOURCE_APPLICATION
+
+  """スカウト経由"""
+  SCOUT
+}
+
+"""案件トークルーム / 参加者"""
+type JobmatchingMyJobTalkroomParticipantModel {
+  """ユーザーID"""
+  userId: Int!
+
+  """ユーザー情報"""
+  userInfo: PublicUser!
+
+  """参加者タイプ"""
+  userType: JobTalkroomParticipantType!
+
+  """参加者の本名"""
+  userRealName: String
+
+  """参加者のメールアドレス"""
+  userEmail: String
+}
+
+"""案件トークルーム"""
+type JobmatchingMyJobTalkroomModel {
+  """案件トークルームUlid"""
+  jobTalkroomUlid: String!
+
+  """アクティブ状態（メッセージ送信可能）"""
+  isActive: Boolean!
+
+  """アクションステータス"""
+  jobTalkroomActionStatus: JobTalkroomActionStatus!
+
+  """ログインしている参加者"""
+  meParticipant: JobmatchingMyJobTalkroomParticipantModel!
+
+  """相手の参加者"""
+  opponentParticipant: JobmatchingMyJobTalkroomParticipantModel!
+
+  """案件アクション（求人広告・スカウト・継続案件応募）"""
+  jobPostingAction: JobmatchingMyJobTalkroomJobPostingActionModel!
+}
+
+"""案件管理 / My継続案件 / 最新のメッセージ"""
+type JobmatchingMyOutsourceLatestMessageModel {
+  """グローバルID"""
+  id: ID
+
+  """データベースID"""
+  databaseId: Int!
+
+  """メッセージ"""
+  message: String!
+
+  """メッセージ送信日時"""
+  sentAt: DateTime!
+
+  """メッセージが返信済みかどうか"""
+  isReplied: Boolean!
+}
+
+"""案件管理 / My継続案件 / 候補者"""
+type JobmatchingMyOutsourceCandidateModel {
+  """グローバルID"""
+  id: ID
+
+  """データベースID"""
+  databaseId: Int!
+
+  """案件トークルームULID"""
+  jobTalkroomUlid: String!
+
+  """未読フラグ"""
+  isUnread: Boolean!
+
+  """未返信フラグ"""
+  isUnreplied: Boolean!
+
+  """スカウト経由フラグ"""
+  isScout: Boolean!
+
+  """案件管理 / My継続案件 / 最新のメッセージ"""
+  latestMessage: JobmatchingMyOutsourceLatestMessageModel
+
+  """応募 / 新着応募フラグ"""
+  isNew: Boolean!
+
+  """応募 / 応募候補者 / User ID"""
+  applicationUserId: Int
+
+  """応募 / 応募候補者"""
+  applicationSupplier: PublicUser
+
+  """応募 / 応募状態"""
+  applicationStatus: JobmatchingOutsourceApplicationStatus
+
+  """応募 / 面談開始時間"""
+  meetingStartingAt: DateTime
+
+  """応募 / 希望する報酬"""
+  desiredUnitPrice: Int
+
+  """スカウト / スカウト候補者 / User ID"""
+  scoutRecipientId: Int
+
+  """スカウト / スカウト候補者"""
+  scoutRecipient: PublicUser
+
+  """スカウト / スカウトメッセージ"""
+  scoutMessage: String
+
+  """スカウト / スカウト送信日時"""
+  scoutedAt: DateTime
+
+  """スカウト / スカウト進行状態"""
+  scoutActiveStatus: JobmatchingScoutActiveStatus
+
+  """応募 / 候補者の本名"""
+  userRealName: String
+}
+
+"""オフセットページ情報"""
+type JobmatchingOffsetPageInfo
+  @shareable
+{
+  """全体のアイテム数"""
+  totalCount: Int!
+
+  """現在のページ番号"""
+  currentPage: Int!
+
+  """総ページ数"""
+  totalPages: Int!
+
+  """次のページが存在するか"""
+  hasNextPage: Boolean!
+
+  """前のページが存在するか"""
+  hasPreviousPage: Boolean!
+}
+
+"""案件管理 / My継続案件 レスポンス"""
+type JobmatchingMyOutsourceDto {
+  """データベースID"""
+  databaseId: Int!
+
+  """JobPostingULID"""
+  jobPostingUlid: String!
+
+  """継続案件ULID"""
+  outsourceUlid: String!
+
+  """経験職種ID"""
+  experienceJobCategoryId: Int
+
+  """案件タイトル"""
+  title: String
+
+  """支払いタイプ（時給制・月給制）"""
+  paymentMethodType: JobmatchingOutsourcePaymentMethodType
+
+  """最低単価"""
+  minUnitPrice: Int
+
+  """最高単価"""
+  maxUnitPrice: Int
+
+  """案件公開状態"""
+  isPublic: Boolean!
+
+  """案件ステータス"""
+  postingStatus: JobmatchingOutsourcePostingStatus!
+
+  """稼働日数"""
+  workingDayType: JobmatchingOutsourceWorkingDayType
+
+  """下限稼働時間"""
+  minWorkingHour: Int
+
+  """上限稼働時間"""
+  maxWorkingHour: Int
+
+  """作成日時"""
+  createdAt: DateTime!
+
+  """案件のスカウト送信数"""
+  scoutCount: Int!
+
+  """案件の総応募数"""
+  applicationCount: Int!
+
+  """案件の新着応募数"""
+  unreadApplicationCount: Int!
+
+  """案件の契約応募数"""
+  finishedApplicationCount: Int!
+}
+
+"""My継続型案件の案件状態"""
+enum JobmatchingOutsourcePostingStatus {
+  """下書き"""
+  DRAFT
+
+  """公開募集中"""
+  PUBLISHED
+
+  """非公開（個別オファー）"""
+  PRIVATE
+
+  """受付終了"""
+  FINISHED
+
+  """取り下げ"""
+  BANNED
+
+  """取り下げ"""
+  STOP
+}
+
+"""案件管理 / My継続案件一覧(オフセットベースページネーション)"""
+type JobmatchingMyOutsourcesModel {
+  """取得したアイテムのリスト"""
+  outsources: [JobmatchingMyOutsourceDto!]!
+
+  """継続案件の新着応募件数"""
+  unreadAppliedOutsourcesCount: Int!
+
+  """ページ情報"""
+  pageInfo: JobmatchingOffsetPageInfo!
+}
+
+"""案件トークルーム / 事前契約条件 / 継続案件の事前契約条件"""
+type JobmatchingOutsourceContractPrecondition {
+  """グローバルID"""
+  id: ID
+
+  """データベースID"""
+  databaseId: Int!
+
+  """支払い方法"""
+  paymentType: JobmatchingOutsourceContractPreconditionPaymentType!
+
+  """合意ステータス"""
+  isAgreed: Boolean!
+
+  """時間あたりの希望する報酬金額"""
+  hourlyDesiredUnitPrice: Int
+
+  """月あたりの希望する報酬金額"""
+  monthlyDesiredUnitPrice: Int
+
+  """月あたりの希望稼働時間"""
+  monthlyWorkingHours: Int
+
+  """開始日"""
+  startDate: String!
+
+  """合意日時"""
+  agreedAt: DateTime
+
+  """備考"""
+  note: String
+}
+
+"""案件トークルーム / 事前契約条件 / 事前契約条件の支払い方法"""
+enum JobmatchingOutsourceContractPreconditionPaymentType {
+  HOURLY
+  MONTHLY
+}
+
+"""Myスカウト受信 / スカウト一覧 / 案件詳細 / レスポンス"""
+type JobmatchingMyScoutJobPostingModel {
+  """グローバルID"""
+  id: ID
+
+  """データベースID"""
+  databaseId: Int!
+
+  """求人広告作成者のユーザーID"""
+  userId: Int!
+
+  """求人広告ULID"""
+  jobPostingUlid: String!
+
+  """公開フラグ"""
+  isPublic: Boolean!
+
+  """継続案件"""
+  outsource: JobmatchingOutsourceModel
+}
+
+"""Myスカウト受信 / スカウト一覧 / スカウト詳細 / レスポンス"""
+type JobmatchingMyScoutModel {
+  """グローバルID"""
+  id: ID
+
+  """データベースID"""
+  databaseId: Int!
+
+  """求人広告アクションID"""
+  jobPostingActionId: Int!
+
+  """スカウトを受けたユーザーID"""
+  recipientId: Int!
+
+  """スカウト時のメッセージ"""
+  message: String!
+
+  """スカウトの進行状態"""
+  activeStatus: JobmatchingScoutActiveStatus!
+
+  """辞退フラグ"""
+  isDeclined: Boolean!
+
+  """取り下げフラグ"""
+  isWithdrawn: Boolean!
+
+  """管理者からの取り下げフラグ"""
+  isBanned: Boolean!
+
+  """作成日時"""
+  createdAt: DateTime!
+
+  """更新日時"""
+  updatedAt: DateTime!
+
+  """スカウトを受けたユーザー"""
+  scoutedUser: PublicUser!
+
+  """案件トークルーム"""
+  jobTalkroom: JobmatchingJobTalkroomModel!
+
+  """案件"""
+  jobPosting: JobmatchingMyScoutJobPostingModel!
+
+  """最新のメッセージ"""
+  latestMessage: String
+
+  """案件メッセージに返信済みかどうか"""
+  isMessageReplied: Boolean!
+
+  """最新メッセージの投稿日"""
+  latestMessageDate: DateTime
+
+  """スカウトの状態"""
+  status: MyScoutStatus!
+}
+
+"""Myスカウトの状態"""
+enum MyScoutStatus {
+  """応募済み"""
+  APPLIED
+
+  """書類選考通過"""
+  SCREENED
+
+  """スカウトあり"""
+  SCOUTED
+
+  """面談調整中"""
+  INTERVIEW_SCHEDULING
+
+  """面談設定済み"""
+  INTERVIEW_SCHEDULED
+
+  """面談完了"""
+  INTERVIEW_COMPLETED
+
+  """オファーあり"""
+  OFFER_RECEIVED
+
+  """契約締結待ち"""
+  PENDING_CONTRACT
+
+  """契約完了"""
+  CONTRACT_COMPLETED
+
+  """取り下げ"""
+  WITHDRAWN
+
+  """お見送り"""
+  REJECTED_BY_CLIENT
+
+  """辞退"""
+  DECLINED_BY_USER
+}
+
+"""Myスカウト受信 / スカウト一覧(オフセットベースページネーション)"""
+type JobmatchingMyScoutsModel {
+  """取得したアイテムのリスト"""
+  scouts: [JobmatchingMyScoutModel!]!
+
+  """未読数"""
+  unreadCount: Int!
+
+  """ページ情報"""
+  pageInfo: JobmatchingOffsetPageInfo!
+}
+
+type Query {
+  """案件トークルーム / 詳細取得（案件メッセージ以外）"""
+  jobmatchingJobTalkroomDetail(input: jobmatchingJobTalkroomUlidInput!): JobmatchingMyJobTalkroomModel!
+
+  """案件トークルーム / メッセージ / メッセージとポーリング関係の情報取得"""
+  jobmatchingJobTalkroomMessages(input: JobTalkroomLatestMessagesInput!): JobmatchingJobTalkroomLatestMessagesAndStatusResult!
+
+  """案件トークルーム / メッセージ / ファイルアップロード用の署名URL取得"""
+  jobmatchingPresignedUrlForUpload(input: jobmatchingPresignedUrlForUploadInput!): String!
+
+  """案件管理 / My継続案件 / 案件一覧を取得"""
+  jobmatchingMyOutsources(
+    """取得するアイテムの数"""
+    limit: Int!
+
+    """ページ番号"""
+    page: Int!
+
+    """案件状態"""
+    postingStatus: JobmatchingOutsourcePostingStatus
+  ): JobmatchingMyOutsourcesModel!
+
+  """案件管理 / My継続案件 / 案件詳細を取得"""
+  jobmatchingMyOutsourceDetail(
+    """求人広告ULID"""
+    jobPostingUlid: String!
+  ): MyOutsourceDetailResult!
+
+  """案件管理 / My継続案件 / 候補者一覧を取得"""
+  jobmatchingMyOutsourceCandidates(
+    """取得するアイテムの数"""
+    limit: Int!
+
+    """ページ番号"""
+    page: Int!
+
+    """案件ULID"""
+    jobPostingUlid: String!
+
+    """候補者状態"""
+    status: OutsourceCandidateStatus! = ACTION_REQUIRED
+
+    """状態フィルター"""
+    filter: OutsourceCandidateStatusFilter = ALL
+  ): MyOutsourceCandidatesResult!
+
+  """案件トークルーム / 事前契約条件 / 指定応募の事前契約条件取得"""
+  jobmatchingGetOutsourceContractPrecondition(input: jobmatchingGetOutsourceContractPreconditionInput!): JobmatchingOutsourceContractPrecondition!
+
+  """Myスカウト受信 / スカウト一覧取得"""
+  jobmatchingMyScoutList(
+    """取得するアイテムの数"""
+    limit: Int!
+
+    """ページ番号"""
+    page: Int!
+  ): JobmatchingMyScoutsModel!
+}
+
+"""案件トークルームULID"""
+input jobmatchingJobTalkroomUlidInput {
+  """案件トークルームULID"""
+  jobTalkroomUlid: String!
+}
+
+"""案件トークルームメッセージ / 取得（ポーリング・過去のメッセージを読み込む・最新メッセージ取得）"""
+input JobTalkroomLatestMessagesInput {
+  """案件トークルームULID"""
+  jobTalkroomUlid: String!
+
+  """取得開始のメッセージID基準点"""
+  startMessageId: Int = 0
+
+  """リクエストタイプ"""
+  requestType: JobTalkroomMessageRequestType! = LATEST
+}
+
+"""案件トークルームメッセージの表示タイプ"""
+enum JobTalkroomMessageRequestType {
+  """最新メッセージの取得（最新の20件を返す）"""
+  LATEST
+
+  """ポーリングからメッセージの取得（startMessageIdから10件を返す）"""
+  POLLING
+
+  """過去のメッセージをさらに読み込む（startMessageId以前の20件を返す）"""
+  LOAD_MORE_PAST_MESSAGE
+}
+
+"""ファイルアップロードするための署名付きURL取得"""
+input jobmatchingPresignedUrlForUploadInput {
+  """S3 オブジェクト キー"""
+  objectKey: String!
+
+  """ファイルタイプ"""
+  fileType: String!
+}
+
+"""継続型案件の詳細 / 取得"""
+union MyOutsourceDetailResult = JobmatchingMyOutsourceDetailModel | JobmatchingAccessDeniedError
+
+"""案件管理 / My継続案件 案件詳細"""
+type JobmatchingMyOutsourceDetailModel {
+  """データベースID"""
+  databaseId: Int!
+
+  """継続案件ULID"""
+  outsourceUlid: String!
+
+  """経験職種ID"""
+  experienceJobCategoryId: Int
+
+  """案件タイトル"""
+  title: String
+
+  """支払いタイプ（時給制・月給制）"""
+  paymentMethodType: JobmatchingOutsourcePaymentMethodType
+
+  """最低単価"""
+  minUnitPrice: Int
+
+  """最高単価"""
+  maxUnitPrice: Int
+
+  """案件公開状態"""
+  isPublic: Boolean!
+
+  """案件ステータス"""
+  postingStatus: JobmatchingOutsourcePostingStatus!
+
+  """稼働日数"""
+  workingDayType: JobmatchingOutsourceWorkingDayType
+
+  """下限稼働時間"""
+  minWorkingHour: Int
+
+  """上限稼働時間"""
+  maxWorkingHour: Int
+
+  """作成日時"""
+  createdAt: DateTime!
+}
+
+"""アクセス拒否エラー"""
+type JobmatchingAccessDeniedError {
+  """ユーザーに表示するエラーメッセージ"""
+  message: String!
+
+  """エラーパス"""
+  path: String!
+}
+
+"""自身が作成した継続案件の候補者一覧 / 取得"""
+union MyOutsourceCandidatesResult = JobmatchingMyOutsourceCandidatesModel | JobmatchingAccessDeniedError
+
+"""案件管理 / My継続案件の候補者一覧 レスポンス"""
+type JobmatchingMyOutsourceCandidatesModel {
+  """候補者リスト"""
+  candidates: [JobmatchingMyOutsourceCandidateModel!]!
+
+  """ページネーション情報"""
+  pageInfo: JobmatchingOffsetPageInfo!
+
+  """案件の候補者総数"""
+  jobPostingCandidateCount: Int!
+
+  """要対応タブの候補者数"""
+  tabActionRequiredCandidateCount: Int!
+
+  """スカウト送信済みタブの候補者数"""
+  tabScoutedCandidateCount: Int!
+
+  """応募済みタブの候補者数"""
+  tabAppliedCandidateCount: Int!
+
+  """面談予定タブの候補者数"""
+  tabScheduledCandidateCount: Int!
+
+  """契約済みタブの候補者数"""
+  tabContractedCandidateCount: Int!
+
+  """辞退・お見送りタブの候補者数"""
+  tabRejectedCandidateCount: Int!
+
+  """タブに対応する未読件数"""
+  tabFilterUnreadCount: Int!
+
+  """タブに対応する未返信件数"""
+  tabFilterUnrepliedCount: Int!
+}
+
+"""My継続型案件の候補者状態"""
+enum OutsourceCandidateStatus {
+  """要対応"""
+  ACTION_REQUIRED
+
+  """スカウト送信済み"""
+  SCOUTED
+
+  """応募済み"""
+  APPLIED
+
+  """面談予定"""
+  SCHEDULED
+
+  """契約済み"""
+  CONTRACTED
+
+  """辞退・お見送り"""
+  REJECTED
+}
+
+"""My継続型案件の候補者の対応フィルター"""
+enum OutsourceCandidateStatusFilter {
+  """全て"""
+  ALL
+
+  """未読"""
+  UNREAD
+
+  """未返信"""
+  UNREPLIED
+}
+
+"""案件トークルーム / 事前契約条件 / 指定応募の事前契約条件取得 / Input"""
+input jobmatchingGetOutsourceContractPreconditionInput {
+  """トークルームULID"""
+  jobTalkroomUlid: String!
+}
+
+type Mutation {
+  """案件トークルーム / メッセージ / メッセージ投稿"""
+  jobmatchingPostJobTalkroomMessage(input: jobmatchingPostJobTalkroomMessageInput!): JobmatchingPostJobTalkroomMessageDto!
+
+  """案件トークルーム / 募集受注者 / 応募の辞退"""
+  jobmatchingCancelOutsourceApplication(filter: jobmatchingCancelOutsourceApplicationInput!): JobTalkroomUpdateOutsourceApplicationCancelResult!
+
+  """案件トークルーム / 募集発注者 / 応募のお見送り"""
+  jobmatchingRejectedOutsourceApplication(filter: jobmatchingRejectedOutsourceApplicationInput!): JobTalkroomUpdateOutsourceApplicationRejectResult!
+
+  """案件トークルーム / 募集発注者 / 応募の書類選考通過"""
+  jobmatchingScreenedOutsourceApplication(filter: jobmatchingScreenedOutsourceApplicationInput!): JobTalkroomUpdateOutsourceApplicationScreenedResult!
+
+  """案件トークルーム / Myスカウト受信 / スカウトの辞退"""
+  jobmatchingJobTalkroomUpdateScoutDecline(filter: jobmatchingDeclinedScoutInput!): JobTalkroomUpdateScoutDeclineResult!
+
+  """案件トークルーム / Myスカウト発信 / スカウトの取り下げ"""
+  jobmatchingJobTalkroomUpdateScoutWithdraw(filter: jobmatchingWithdrawnScoutInput!): JobTalkroomUpdateScoutWithdrawResult!
+
+  """案件管理 / My継続案件 / 下書きを削除"""
+  jobmatchingMyOutsourceDraftDelete(
+    """案件広告ULID"""
+    jobPostingUlid: String!
+  ): MyOutsourceDraftDeleteResult!
+
+  """案件管理 / My継続案件 / 案件状態を更新"""
+  jobmatchingMyOutsourceUpdateStatus(
+    """案件広告ULID"""
+    jobPostingUlid: String!
+
+    """案件状態遷移アクション"""
+    transitAction: OutsourceStatusTransitAction!
+  ): MyOutsourceUpdateStatusResult!
+
+  """案件トークルーム / 募集発注者 / 事前契約条件 / 指定応募の事前契約条件作成と更新"""
+  jobmatchingCreateOutsourceContractPrecondition(input: jobmatchingCreateOutsourceContractPreconditionInput!): OutsourceContractPreconditionResult!
+
+  """案件トークルーム / 募集受注者 / 事前契約条件 / 指定応募の事前契約条件を合意"""
+  jobmatchingAgreeOutsourceContractPrecondition(input: jobmatchingAgreeOutsourceContractPreconditionInput!): JobmatchingOutsourceContractPrecondition!
+
+  """案件トークルーム / 募集発注者 / 三者面談 / 指定応募の三者面談作成と面談可能時間帯新規保存"""
+  jobmatchingCreateOnlineMeetingSchedule(input: jobmatchingCreateOnlineMeetingScheduleInput!): OutsourceOnlineMeetingResult!
+
+  """案件トークルーム / 募集発注者 / 三者面談 / 指定面談の面談可能時間帯アップデート"""
+  jobmatchingUpdateOnlineMeetingSchedule(input: jobmatchingUpdateOnlineMeetingScheduleInput!): OutsourceOnlineMeetingResult!
+
+  """案件トークルーム / 募集応募者 / 三者面談 / 指定面談の面談日程再設定請求"""
+  jobmatchingRequestOnlineMeetingReschedule(input: jobmatchingRequestOnlineMeetingRescheduleInput!): OutsourceOnlineMeetingResult!
+
+  """案件トークルーム / 募集応募者 / 三者面談 / 指定面談の面談時間確定"""
+  jobmatchingConfirmOnlineMeetingSchedule(input: jobmatchingConfirmOnlineMeetingScheduleInput!): OutsourceOnlineMeetingResult!
+
+  """案件トークルーム / 募集発注者 / 三者面談 / 指定面談の募集者入室"""
+  jobmatchingJoinOnlineMeeting(input: jobmatchingJoinOnlineMeetingInput!): OutsourceOnlineMeetingResult!
+
+  """案件トークルーム / 募集発注者 / 三者面談 / 指定面談の面談キャンセル"""
+  jobmatchingCancelOnlineMeeting(input: jobmatchingCancelOnlineMeetingInput!): OutsourceOnlineMeetingResult!
+
+  """Myスカウト受信 / スカウトの応募"""
+  jobmatchingUpdateScoutApply(input: jobmatchingUpdateScoutApplyInput!): UpdateScoutApplyResult!
+}
+
+"""メッセージ投稿"""
+input jobmatchingPostJobTalkroomMessageInput {
+  """案件トークルームULID"""
+  jobTalkroomUlid: String!
+
+  """メッセージ本文"""
+  message: String!
+
+  """フォーマットタイプ"""
+  jobmatchingJobTalkroomMessageFormatType: JobTalkroomMessageFormatType!
+
+  """添付ファイル"""
+  attachmentFiles: [jobmatchingPostJobTalkroomMessageWithAttachmentInput!]
+}
+
+"""メッセージ投稿 添付ファイル"""
+input jobmatchingPostJobTalkroomMessageWithAttachmentInput {
+  """ファイル名"""
+  fileName: String!
+
+  """ファイルキー（オブジェクトキー）"""
+  fileKey: String!
+
+  """ファイルサイズ"""
+  fileSize: Int!
+
+  """MIME"""
+  mime: String!
+}
+
+"""応募辞退"""
+union JobTalkroomUpdateOutsourceApplicationCancelResult = JobmatchingJobTalkroomUpdateOutsourceApplicationCancelDto | JobmatchingTransitionDeniedError | JobmatchingNotFoundError
+
+"""案件トークルーム / 応募 辞退 / レスポンス"""
+type JobmatchingJobTalkroomUpdateOutsourceApplicationCancelDto {
+  """データベースID"""
+  databaseId: Int!
+
+  """応募状態"""
+  status: JobmatchingOutsourceApplicationStatus!
+}
+
+"""遷移拒否エラー"""
+type JobmatchingTransitionDeniedError {
+  """ユーザーに表示するエラーメッセージ"""
+  message: String!
+
+  """エラーパス"""
+  path: String!
+}
+
+"""リソース未発見エラー"""
+type JobmatchingNotFoundError {
+  """ユーザーに表示するエラーメッセージ"""
+  message: String!
+
+  """エラーパス"""
+  path: String!
+}
+
+"""継続案件の応募の辞退"""
+input jobmatchingCancelOutsourceApplicationInput {
+  """案件トークルームULID"""
+  jobTalkroomUlid: String!
+
+  """メッセージ投稿の入力"""
+  message: String!
+}
+
+"""応募お見送り"""
+union JobTalkroomUpdateOutsourceApplicationRejectResult = JobmatchingJobTalkroomUpdateOutsourceApplicationRejectDto | JobmatchingTransitionDeniedError | JobmatchingNotFoundError
+
+"""案件トークルーム / 応募 お見送り / レスポンス"""
+type JobmatchingJobTalkroomUpdateOutsourceApplicationRejectDto {
+  """データベースID"""
+  databaseId: Int!
+
+  """応募状態"""
+  status: JobmatchingOutsourceApplicationStatus!
+}
+
+"""継続案件の応募のお見送り"""
+input jobmatchingRejectedOutsourceApplicationInput {
+  """案件トークルームULID"""
+  jobTalkroomUlid: String!
+
+  """メッセージ投稿の入力"""
+  message: String!
+}
+
+"""応募 書類選考通過"""
+union JobTalkroomUpdateOutsourceApplicationScreenedResult = JobmatchingJobTalkroomUpdateOutsourceApplicationScreenedDto | JobmatchingTransitionDeniedError | JobmatchingNotFoundError
+
+"""案件トークルーム / 応募 書類選考通過 / レスポンス"""
+type JobmatchingJobTalkroomUpdateOutsourceApplicationScreenedDto {
+  """データベースID"""
+  databaseId: Int!
+
+  """応募状態"""
+  status: JobmatchingOutsourceApplicationStatus!
+}
+
+"""継続案件の応募の書類選考通過"""
+input jobmatchingScreenedOutsourceApplicationInput {
+  """案件トークルームULID"""
+  jobTalkroomUlid: String!
+}
+
+"""スカウト 辞退"""
+union JobTalkroomUpdateScoutDeclineResult = JobmatchingJobTalkroomUpdateScoutDeclineDto | JobmatchingTransitionDeniedError | JobmatchingNotFoundError
+
+"""案件トークルーム / スカウト 辞退 / レスポンス"""
+type JobmatchingJobTalkroomUpdateScoutDeclineDto {
+  """データベースID"""
+  databaseId: Int!
+
+  """辞退フラグ"""
+  isDeclined: Boolean!
+}
+
+"""スカウトの辞退"""
+input jobmatchingDeclinedScoutInput {
+  """案件トークルームULID"""
+  jobTalkroomUlid: String!
+
+  """メッセージ投稿の入力"""
+  message: String!
+}
+
+"""スカウト 取り下げ"""
+union JobTalkroomUpdateScoutWithdrawResult = JobmatchingJobTalkroomUpdateScoutWithdrawDto | JobmatchingTransitionDeniedError | JobmatchingNotFoundError
+
+"""案件トークルーム / スカウト 取り下げ / レスポンス"""
+type JobmatchingJobTalkroomUpdateScoutWithdrawDto {
+  """データベースID"""
+  databaseId: Int!
+
+  """取り下げフラグ"""
+  isWithdrawn: Boolean!
+}
+
+"""スカウトの取り下げ"""
+input jobmatchingWithdrawnScoutInput {
+  """案件トークルームULID"""
+  jobTalkroomUlid: String!
+
+  """メッセージ投稿の入力"""
+  message: String!
+}
+
+"""継続型案件の下書き / 削除"""
+union MyOutsourceDraftDeleteResult = JobmatchingMyOutsourceModel | JobmatchingAccessDeniedError
+
+"""案件管理 / My継続案件"""
+type JobmatchingMyOutsourceModel {
+  """グローバルID"""
+  id: ID
+
+  """データベースID"""
+  databaseId: Int!
+
+  """案件ULID"""
+  outsourceUlid: String!
+
+  """継続型案件の案件状態"""
+  status: JobmatchingOutsourcePostingStatus!
+
+  """案件広告ULID"""
+  jobPostingUlid: String!
+}
+
+"""継続型案件ステータス / 更新"""
+union MyOutsourceUpdateStatusResult = JobmatchingMyOutsourceModel | JobmatchingAccessDeniedError | JobmatchingTransitionDeniedError
+
+"""案件状態遷移アクション"""
+enum OutsourceStatusTransitAction {
+  """公開に設定"""
+  SET_PUBLIC
+
+  """非公開に設定"""
+  SET_PRIVATE
+
+  """受付終了に設定"""
+  SET_FINISHED
+
+  """受付再開に設定"""
+  UNSET_FINISHED
+}
+
+"""継続型案件契約条件 / 取得"""
+union OutsourceContractPreconditionResult = JobmatchingOutsourceContractPreconditionDto | JobmatchingAccessDeniedError | JobmatchingInputsValidationError | JobmatchingTransitionDeniedError
+
+"""事前契約条件 / 操作後のレスポンス"""
+type JobmatchingOutsourceContractPreconditionDto {
+  """データベースID"""
+  databaseId: Int!
+}
+
+"""入力値エラー"""
+type JobmatchingInputsValidationError {
+  """ユーザーに表示するエラーメッセージ"""
+  message: String!
+
+  """エラーパス"""
+  path: String!
+
+  """ユーザーに表示するエラーメッセージの配列"""
+  inputMessages: [String!]
+}
+
+"""案件トークルーム / 事前契約条件 / 事前契約条件の新規保存 / Input"""
+input jobmatchingCreateOutsourceContractPreconditionInput {
+  """トークルームULID"""
+  jobTalkroomUlid: String!
+
+  """支払い方法"""
+  paymentType: JobmatchingOutsourceContractPreconditionPaymentType!
+
+  """時間あたりの希望する報酬金額"""
+  hourlyDesiredUnitPrice: Int
+
+  """月あたりの希望する報酬金額"""
+  monthlyDesiredUnitPrice: Int
+
+  """月あたりの希望稼働時間"""
+  monthlyWorkingHours: Int
+
+  """希望開始日"""
+  startDate: DateTime!
+
+  """補足事項"""
+  note: String
+}
+
+"""事前契約条件 / 指定応募の事前契約条件更新 / Input"""
+input jobmatchingAgreeOutsourceContractPreconditionInput {
+  """トークルームULID"""
+  jobTalkroomUlid: String!
+
+  """メッセージ"""
+  message: String
+}
+
+"""継続型案件三者面談 / 取得"""
+union OutsourceOnlineMeetingResult = JobmatchingOutsourceOnlineMeetingDto | JobmatchingAccessDeniedError | JobmatchingInputsValidationError
+
+"""三者面談 / 操作後のレスポンス"""
+type JobmatchingOutsourceOnlineMeetingDto {
+  """Dummy ID"""
+  id: ID
+}
+
+"""三者面談 / 指定応募の三者面談作成と面談可能時間帯新規保存 / Input"""
+input jobmatchingCreateOnlineMeetingScheduleInput {
+  """ユーザーメッセージ"""
+  message: String
+
+  """案件トークルームULID"""
+  jobTalkroomUlid: String!
+
+  """面談時間"""
+  durationType: JobmatchingOutsourceOnlineMeetingDuration!
+
+  """面談可能時間帯"""
+  onlineMeetingDates: [jobmatchingOutsourceOnlineMeetingDateInput!]!
+}
+
+"""三者面談の予約可能時間帯"""
+input jobmatchingOutsourceOnlineMeetingDateInput {
+  """面談可能時間帯の開始時間"""
+  startTime: DateTime!
+
+  """面談可能時間帯の終了時間"""
+  endTime: DateTime!
+}
+
+"""三者面談 / 指定面談の面談可能時間帯アップデート / Input"""
+input jobmatchingUpdateOnlineMeetingScheduleInput {
+  """ユーザーメッセージ"""
+  message: String
+
+  """面談時間"""
+  durationType: JobmatchingOutsourceOnlineMeetingDuration!
+
+  """面談可能時間帯"""
+  onlineMeetingDates: [jobmatchingOutsourceOnlineMeetingDateInput!]!
+
+  """三者面談ID"""
+  outsourceOnlineMeetingId: Int!
+}
+
+"""三者面談 / 指定面談の面談日程再設定請求 / Input"""
+input jobmatchingRequestOnlineMeetingRescheduleInput {
+  """三者面談ID"""
+  outsourceOnlineMeetingId: Int!
+
+  """ユーザーメッセージ"""
+  message: String
+}
+
+"""三者面談 / 指定面談の面談日時確定 / Input"""
+input jobmatchingConfirmOnlineMeetingScheduleInput {
+  """三者面談ID"""
+  outsourceOnlineMeetingId: Int!
+
+  """ユーザーメッセージ"""
+  message: String
+
+  """面談確定の日時"""
+  onlineMeetingAt: DateTime!
+}
+
+"""三者面談 / 指定面談の募集者入室 / Input"""
+input jobmatchingJoinOnlineMeetingInput {
+  """三者面談ID"""
+  outsourceOnlineMeetingId: Int!
+}
+
+"""三者面談 / 指定面談の面談キャンセル / Input"""
+input jobmatchingCancelOnlineMeetingInput {
+  """三者面談ID"""
+  outsourceOnlineMeetingId: Int!
+
+  """ユーザーメッセージ"""
+  message: String
+}
+
+"""スカウト 応募"""
+union UpdateScoutApplyResult = JobmatchingUpdateScoutApplyDto | JobmatchingTransitionDeniedError | JobmatchingInputsValidationError | JobmatchingNotFoundError
+
+"""スカウトの応募 レスポンス"""
+type JobmatchingUpdateScoutApplyDto {
+  """グローバルID"""
+  id: ID!
+
+  """データベースID"""
+  databaseId: Int!
+
+  """求人広告アクションID"""
+  jobPostingActionId: Int!
+
+  """スカウトを受けたユーザーID"""
+  recipientId: Int!
+
+  """スカウト時のメッセージ"""
+  message: String!
+
+  """スカウトの進行状態"""
+  activeStatus: JobmatchingScoutActiveStatus!
+
+  """辞退フラグ"""
+  isDeclined: Boolean!
+
+  """取り下げフラグ"""
+  isWithdrawn: Boolean!
+
+  """管理者からの取り下げフラグ"""
+  isBanned: Boolean!
+
+  """作成日時"""
+  createdAt: DateTime!
+
+  """更新日時"""
+  updatedAt: DateTime!
+}
+
+"""スカウトの応募"""
+input jobmatchingUpdateScoutApplyInput {
+  """案件トークルームULID"""
+  jobTalkroomUlid: String!
+
+  """応募メッセージ"""
+  applicationMessage: String!
+
+  """希望する報酬"""
+  desiredUnitPrice: Int
+
+  """報酬相談希望"""
+  needPaymentConsultation: Boolean!
+}
