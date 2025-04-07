@@ -1,7 +1,7 @@
 import graphqlStandardPlugin from '@graphql-eslint/eslint-plugin';
 import graphqlApigatewayPlugin from '@apigateway/graphql-schema-eslint-plugin';
 
-const schemaPath = '../**/*.{graphql,graphqls}';
+const schemaPath = '**/*.{graphql,graphqls}';
 const schemaPaths = [schemaPath];
 
 export default [
