@@ -2,7 +2,17 @@ import graphqlStandardPlugin from '@graphql-eslint/eslint-plugin';
 import graphqlApigatewayPlugin from '@apigateway/graphql-schema-eslint-plugin';
 
 const schemaPath = '**/*.{graphql,graphqls}';
-const schemaPaths = [schemaPath];
+
+const subgraphCorePath = 'internal/graph/subgraph/schema/core/**/*.{graphql,graphqls}';
+const subgraphCoconalaPath = 'internal/graph/subgraph/schema/coconala/**/*.{graphql,graphqls}';
+const subgraphProfilePath = 'internal/graph/subgraph/schema/profile/**/*.{graphql,graphqls}';
+
+const schemaPaths = [
+  schemaPath,
+  subgraphCorePath,
+  subgraphCoconalaPath,
+  subgraphProfilePath,
+];
 
 export default [
   {
@@ -23,9 +33,16 @@ export default [
   },
   {
     // Setup Schema Rules Prefix
-    files: [schemaPath],
+    files: [schemaPath, subgraphProfilePath],
     rules: {
       ...graphqlApigatewayPlugin.configs['flat/apigateway-prefix'].rules,
     },
-  }
+  },
+  {
+    // Setup Schema Rules No Prefix
+    files: [subgraphCorePath, subgraphCoconalaPath],
+    rules: {
+      ...graphqlApigatewayPlugin.configs['flat/apigateway-no-prefix'].rules,
+    },
+  },
 ];
